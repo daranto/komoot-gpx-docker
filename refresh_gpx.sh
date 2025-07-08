@@ -11,8 +11,15 @@ if [ -z "$EMAIL" ] || [ -z "$PASSWORD" ]; then
   exit 1
 fi
 
-# KomootGPX-Befehl zusammenstellen
-KOMOOTGPX_CMD="komootgpx -o ${OUTPUT_DIR} -m \"${EMAIL}\" -p \"${PASSWORD}\" -a"  # Anführungszeichen um die Variablen
+# Ausgabeverzeichnis leeren
+echo "Leere Ausgabeverzeichnis: ${OUTPUT_DIR}"
+rm -rf "${OUTPUT_DIR}"/*
 
-echo "Führe aus: komootgpx -o ${OUTPUT_DIR} -m <zensiert> -p <zensiert> -a" # E-Mail und Passwort zensieren
+# Ausgabeverzeichnis neu erstellen
+mkdir -p "${OUTPUT_DIR}"
+
+# KomootGPX-Befehl zusammenstellen
+KOMOOTGPX_CMD="komootgpx -o ${OUTPUT_DIR} -m \"${EMAIL}\" -p \"${PASSWORD}\" -a"
+
+echo "Führe aus: komootgpx -o ${OUTPUT_DIR} -m <zensiert> -p <zensiert> -a"
 eval $KOMOOTGPX_CMD
