@@ -2,6 +2,8 @@
 
 Dieses Projekt erstellt einen Docker-Container, der GPX-Dateien von Komoot herunterlädt und sie über einen einfachen Webserver bereitstellt.
 
+Vielen Dank an https://github.com/timschneeb/KomootGPX für die Komoot-Python-Library.
+
 ## Voraussetzungen
 
 *   [Docker](https://www.docker.com/) und [Docker Compose](https://docs.docker.com/compose/install/) müssen installiert sein.
@@ -43,6 +45,10 @@ Dieses Projekt erstellt einen Docker-Container, der GPX-Dateien von Komoot herun
 5.  **GPX-Dateien aktualisieren:**
 
     Klicke auf den "GPX-Dateien aktualisieren"-Button auf der Webseite, um die neuesten GPX-Dateien von Komoot herunterzuladen.
+
+6.  **GPX-Dateien erhalten via JSON:**
+
+    Klicke auf den "GPX-Liste (JSON)"-Button auf der Webseite, um die Namen und URLs von den aktuell verfügbaren Routen zu erhalten. Nützlich für die weitere Datenverabeitung. 
 
 ## Docker Compose Befehle
 
