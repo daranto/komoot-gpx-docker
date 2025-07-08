@@ -1,0 +1,1 @@
+# Hier werden keine zusätzlichen Abhängigkeiten benötigt, da komootgpx das einzige ist.

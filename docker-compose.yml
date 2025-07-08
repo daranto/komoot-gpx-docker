@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  komootgpx-web:
+    build: .
+    ports:
+      - "4444:8000"
+    volumes:
+      - komootgpx-data:/app/gpx
+    environment:
+      - OUTPUT_DIR=/app/gpx
+      - KOMOOT_EMAIL="EMAIL EINTRAGEN"  # Umgebungsvariable für E-Mail
+      - KOMOOT_PASSWORD="PASSWORT EINTRAGEN" # Umgebungsvariable für Passwort
+    restart: unless-stopped
+
+volumes:
+  komootgpx-data:
