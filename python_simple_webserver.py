@@ -5,6 +5,7 @@ import subprocess
 import html
 import json
 from urllib.parse import unquote, quote
+import xml.etree.ElementTree as ET
 
 PORT = 8000
 DIRECTORY = "/app/gpx"
@@ -19,12 +20,33 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
         path = unquote(path)
         return super().translate_path(path)
 
+    def get_gpx_description(self, filepath):
+        try:
+            tree = ET.parse(filepath)
+            root = tree.getroot()
+            ns = {'gpx': 'http://www.topografix.com/GPX/1/1'}
+            desc_element = root.find('.//gpx:desc', ns)
+            if desc_element is not None:
+                return desc_element.text
+            else:
+                return ""
+        except Exception as e:
+            print(f"Fehler beim Parsen von {filepath}: {e}")
+            return ""
+
     def do_GET(self):
         if self.path == '/':
             self.send_response(200)
             self.send_header('Content-type', 'text/html; charset=utf-8')
             self.end_headers()
             gpx_files = [f for f in os.listdir(DIRECTORY) if f.endswith('.gpx')]
+            # Daten für die Tabelle erstellen
+            table_data = []
+            for f in gpx_files:
+                filepath = os.path.join(DIRECTORY, f)
+                description = self.get_gpx_description(filepath)
+                table_data.append({"name": f, "url": quote(f), "description": description})
+
             html_content = f"""
             <!DOCTYPE html>
             <html lang="de">
@@ -33,10 +55,19 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 <meta charset="UTF-8">
                 <style>
                     body {{ font-family: sans-serif; }}
-                    ul {{ list-style-type: none; padding: 0; }}
-                    li {{ margin-bottom: 0.5em; }}
-                    a {{ text-decoration: none; color: #007bff; }}
-                    a:hover {{ text-decoration: underline; }}
+                    table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }}
+                    th, td {{
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                    }}
+                    th {{
+                        background-color: #f2f2f2;
+                    }}
                     .button-container {{
                         display: flex;
                         gap: 10px;
@@ -63,9 +94,17 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             <body>
                 <h1>Komoot GPX Downloads</h1>
                 <p>Hier sind die heruntergeladenen GPX-Dateien:</p>
-                <ul>
-                    {''.join(f'<li><a href="{quote(f)}">{html.escape(f)}</a></li>' for f in gpx_files)}
-                </ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name der Route</th>
+                            <th>Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {''.join(f'<tr><td><a href="{quote(data["url"])}">{html.escape(data["name"])}</a></td><td>{html.escape(data["description"])}</td></tr>' for data in table_data)}
+                    </tbody>
+                </table>
                 <div class="button-container">
                     <form method="post" action="/refresh">
                         <button type="submit" class="button">GPX-Dateien aktualisieren</button>
@@ -81,7 +120,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header('Content-type', 'application/json; charset=utf-8')
             self.end_headers()
             gpx_files = [f for f in os.listdir(DIRECTORY) if f.endswith('.gpx')]
-            json_data = json.dumps([{"name": f, "url": quote(f)} for f in gpx_files], indent=4) # WEB_DIRECTORY entfernt
+            json_data = json.dumps([{"name": f, "url": quote(f), "description": self.get_gpx_description(os.path.join(DIRECTORY, f))} for f in gpx_files], indent=4)
             self.wfile.write(json_data.encode('utf-8'))
         else:
             super().do_GET()
