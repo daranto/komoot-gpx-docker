@@ -18,23 +18,14 @@ Dieses Projekt erstellt einen Docker-Container, der GPX-Dateien von Komoot herun
 
 2.  **Konfiguration:**
 
-    *   Erstelle eine `.env`-Datei im Repository-Verzeichnis (optional, aber empfohlen):
+    *   E-Mail und Passwort in der docker-compose Datei hinterlegen
 
         ```
-        KOMOOT_EMAIL=deine_email@example.com
-        KOMOOT_PASSWORD=dein_passwort
+        - KOMOOT_EMAIL="<EMAIL EINTRAGEN>"  # Umgebungsvariable für E-Mail
+        - KOMOOT_PASSWORD="<PASSWORT EINTRAGEN>" # Umgebungsvariable für Passwort
         ```
 
-        **Achtung:** Das Speichern von Passwörtern in der `.env`-Datei ist für lokale Tests in Ordnung, aber für Produktionsumgebungen solltest du sicherere Methoden wie Docker Secrets verwenden.
-
-    *   Alternativ kannst du die Umgebungsvariablen direkt in deiner Shell setzen (nicht empfohlen für dauerhafte Speicherung):
-
-        ```bash
-        export KOMOOT_EMAIL="deine_email@example.com"
-        export KOMOOT_PASSWORD="dein_passwort"
-        ```
-
-    *   Wenn du die `.env`-Datei verwendest, wird Docker Compose die Umgebungsvariablen automatisch laden.
+        **Achtung:** Das Speichern von Passwörtern in der `docker-compose.yml`-Datei ist für lokale Tests in Ordnung, aber für Produktionsumgebungen solltest du sicherere Methoden wie Docker Secrets verwenden.
 
 3.  **Erstelle und starte den Container:**
 
