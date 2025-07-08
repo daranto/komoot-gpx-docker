@@ -50,7 +50,7 @@ Vielen Dank an https://github.com/timschneeb/KomootGPX für die Komoot-Python-Li
 
 6.  **GPX-Dateien erhalten via JSON:**
 
-    Klicke auf den "GPX-Liste (JSON)"-Button auf der Webseite, um die Namen und URLs von den aktuell verfügbaren Routen zu erhalten. Nützlich für die weitere Datenverabeitung. 
+    Klicke auf den "GPX-Liste (JSON)"-Button auf der Webseite, um die Namen,URLs sowie die Beschreibung von den aktuell verfügbaren Routen zu erhalten. Nützlich für die weitere Datenverabeitung. 
 
 ## Docker Compose Befehle
 
