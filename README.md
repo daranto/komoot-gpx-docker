@@ -1,1 +1,96 @@
-# komoot-gpx-docker
+# Komoot GPX Downloader mit Webserver
+
+Dieses Projekt erstellt einen Docker-Container, der GPX-Dateien von Komoot herunterlädt und sie über einen einfachen Webserver bereitstellt.
+
+## Voraussetzungen
+
+*   [Docker](https://www.docker.com/) und [Docker Compose](https://docs.docker.com/compose/install/) müssen installiert sein.
+*   Ein Komoot-Konto.
+
+## Installation und Verwendung
+
+1.  **Clone das Repository:**
+
+    ```bash
+    git clone https://github.com/daranto/komoot-gpx-docker.git
+    cd <VERZEICHNIS_DES_REPOSITORIES>
+    ```
+
+2.  **Konfiguration:**
+
+    *   Erstelle eine `.env`-Datei im Repository-Verzeichnis (optional, aber empfohlen):
+
+        ```
+        KOMOOT_EMAIL=deine_email@example.com
+        KOMOOT_PASSWORD=dein_passwort
+        ```
+
+        **Achtung:** Das Speichern von Passwörtern in der `.env`-Datei ist für lokale Tests in Ordnung, aber für Produktionsumgebungen solltest du sicherere Methoden wie Docker Secrets verwenden.
+
+    *   Alternativ kannst du die Umgebungsvariablen direkt in deiner Shell setzen (nicht empfohlen für dauerhafte Speicherung):
+
+        ```bash
+        export KOMOOT_EMAIL="deine_email@example.com"
+        export KOMOOT_PASSWORD="dein_passwort"
+        ```
+
+    *   Wenn du die `.env`-Datei verwendest, wird Docker Compose die Umgebungsvariablen automatisch laden.
+
+3.  **Erstelle und starte den Container:**
+
+    ```bash
+    docker-compose up -d --build
+    ```
+
+    *   `-d`: Führt den Container im Hintergrund aus.
+    *   `--build`: Erstellt das Docker-Image neu, falls sich das Dockerfile geändert hat.
+
+4.  **Zugriff auf die Webseite:**
+
+    Öffne deinen Webbrowser und gehe zu `http://localhost:4444`. Du solltest eine Liste der heruntergeladenen GPX-Dateien sehen.
+
+5.  **GPX-Dateien aktualisieren:**
+
+    Klicke auf den "GPX-Dateien aktualisieren"-Button auf der Webseite, um die neuesten GPX-Dateien von Komoot herunterzuladen.
+
+## Docker Compose Befehle
+
+*   **Container stoppen:**
+
+    ```bash
+    docker-compose down
+    ```
+
+*   **Container-Logs anzeigen:**
+
+    ```bash
+    docker-compose logs -f komootgpx-web
+    ```
+
+    `-f`: Verfolgt die Logs in Echtzeit.
+
+*   **Container neu erstellen (z.B. nach Änderungen am Dockerfile):**
+
+    ```bash
+    docker-compose up -d --build
+    ```
+
+## Konfiguration
+
+Die folgenden Umgebungsvariablen können konfiguriert werden:
+
+*   `KOMOOT_EMAIL`: Deine Komoot-E-Mail-Adresse.
+*   `KOMOOT_PASSWORD`: Dein Komoot-Passwort.
+
+## Dateistruktur
+```
+komoot-gpx-docker/
+├── docker-compose.yml # Docker Compose Konfiguration
+├── Dockerfile # Docker Image Definition
+├── README.md # Diese Datei
+├── start.sh # Skript zum Starten des Webservers und Herunterladen von GPX-Dateien (einmalig)
+├── refresh_gpx.sh # Skript zum Aktualisieren der GPX-Dateien
+├── python_simple_webserver.py # Python Webserver Skript
+├── index.html # (Optional) Statische Indexseite
+└── requirements.txt # Python Abhängigkeiten
+```
