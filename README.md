@@ -4,6 +4,8 @@ Dieses Projekt erstellt einen Docker-Container, der GPX-Dateien von Komoot herun
 
 Vielen Dank an https://github.com/timschneeb/KomootGPX für die Komoot-Python-Library.
 
+![Screenshot](/webpage_example.png)
+
 ## Voraussetzungen
 
 *   [Docker](https://www.docker.com/) und [Docker Compose](https://docs.docker.com/compose/install/) müssen installiert sein.
